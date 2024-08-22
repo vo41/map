@@ -27,7 +27,7 @@ html, body {
   font-weight: bold;
   background-color: #333; /* Dark background for popup */
   color: #fff; /* White text for better contrast */
-  font-size: 14px; /* Larger font size for the popup content */
+  font-size: 12px; /* Smaller font size for the popup content */
   padding: 5px; /* Decreased padding */
   border-radius: 0; /* Remove rounding */
   text-align: center; /* Center text */
@@ -38,12 +38,12 @@ html, body {
   display: none; /* Hide the close button */
 }
 
-/* Hide the zoom controls */
-.leaflet-control-zoom {
-  display: none;
-}
-
 /* Hide default attribution control */
 .leaflet-control-attribution {
   display: none;
+}
+
+/* Custom popup for grouped locations */
+.custom-popup {
+  white-space: pre-line; /* Ensure line breaks are respected in the popup */
 }
