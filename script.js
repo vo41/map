@@ -44,27 +44,37 @@ function getPopupContent(display_name) {
   return `${city}, ${country}`;
 }
 
+// Add markers with clustering
 async function addLocation(placeName) {
   const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${placeName}&format=json`);
   const data = await response.json();
   if (data.length > 0) {
     const { lat, lon, display_name } = data[0];
-    const marker = L.marker([lat, lon], { icon: squareIcon })
-      .addTo(map)
-      .bindPopup(getPopupContent(display_name));
-
-    // Show popup on click or hover
-    marker.on('mouseover', onMarkerClick);
-    marker.on('click', onMarkerClick);
+    return { lat, lon, display_name };
   } else {
     alert('Location not found');
+    return null;
   }
 }
 
-// Add locations
+// Marker clustering setup
+const markers = L.layerGroup().addTo(map);
+const markerClusterGroup = L.markerClusterGroup().addTo(markers);
+
 Promise.all([
   addLocation('Porto, Portugal'),
   addLocation('Lisbon, Portugal'),
   addLocation('Faro, Portugal'),
   addLocation('Campina Grande, Brazil')
-]);
+]).then(locations => {
+  locations.forEach(location => {
+    if (location) {
+      const { lat, lon, display_name } = location;
+      const marker = L.marker([lat, lon], { icon: squareIcon })
+        .bindPopup(getPopupContent(display_name))
+        .on('mouseover', onMarkerClick)
+        .on('click', onMarkerClick);
+      markerClusterGroup.addLayer(marker);
+    }
+  });
+});
