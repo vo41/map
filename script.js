@@ -12,7 +12,8 @@ const map = L.map('map', {
   maxBounds: [[-90, -180], [90, 180]], // Limit panning to map edges
   maxBoundsViscosity: 1.0, // Prevent panning outside the map
   worldCopyJump: true, // Enable map looping (world wrapping)
-  continuousWorld: true // Allow continuous panning across world edges
+  continuousWorld: true, // Allow continuous panning across world edges
+  zoomSnap: 0.5 // Allow smooth zooming
 });
 
 // Add a dark tile layer with minimal delay
@@ -24,9 +25,9 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
 // Define a smaller square icon
 const squareIcon = L.icon({
   iconUrl: 'square.png', // Path to your square flag image
-  iconSize: [15, 15], // Decreased size
-  iconAnchor: [7.5, 7.5], // Adjust anchor point
-  popupAnchor: [0, -15] // Popup position
+  iconSize: [7.5, 7.5], // Reduced size
+  iconAnchor: [3.75, 3.75], // Adjust anchor point
+  popupAnchor: [0, -10] // Popup position
 });
 
 // Function to get location data from OpenStreetMap API
@@ -66,11 +67,14 @@ Promise.all(markerPromises).then(results => {
     const { lat, lon, city, country } = location;
     return L.marker([lat, lon], { icon: squareIcon })
       .bindPopup(`<strong>${city}, ${country}</strong>`, { className: 'custom-popup' })
+      .on('mouseover', function (e) {
+        this.openPopup();
+      })
+      .on('mouseout', function (e) {
+        this.closePopup();
+      })
       .addTo(map);
   });
-
-  // Cluster overlapping markers
-  const markerClusters = L.featureGroup(markers).addTo(map);
 
   // Center the map based on the markers
   if (markers.length > 0) {
