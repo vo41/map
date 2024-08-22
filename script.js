@@ -13,7 +13,7 @@ const map = L.map('map', {
 
 // Add a dark tile layer
 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-  attribution: '© OpenStreetMap contributors'
+  attribution: '' // No attribution text
 }).addTo(map);
 
 // Restrict panning to the bounds
