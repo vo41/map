@@ -41,9 +41,9 @@ map.on('moveend', function() {
 // Define a square icon with decreased size
 const squareIcon = L.icon({
   iconUrl: 'square.png', // Path to your square flag image
-  iconSize: [10.875, 10.875], // Decreased size by 10%
-  iconAnchor: [5.4375, 5.4375], // Adjust anchor point
-  popupAnchor: [0, -15] // Popup position
+  iconSize: [11.4375, 11.4375], // Slightly increased size
+  iconAnchor: [5.71875, 5.71875], // Adjust anchor point
+  popupAnchor: [0, -20] // Popup position
 });
 
 // Define a mouseover event to show popups
