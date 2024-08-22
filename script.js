@@ -6,6 +6,10 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>'
 }).addTo(map);
 
+// Remove default attribution control
+map.attributionControl.setPrefix('');
+
+
 // Define a square icon
 const squareIcon = L.icon({
   iconUrl: 'square-flag.png', // Path to your square flag image
