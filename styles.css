@@ -7,3 +7,10 @@
 .leaflet-container {
   background-color: #2c2c2c; /* Dark background color */
 }
+
+/* Apply Arimo Bold font to popups */
+.leaflet-popup-content-wrapper {
+  font-family: 'Arimo', sans-serif;
+  font-weight: bold;
+}
+
