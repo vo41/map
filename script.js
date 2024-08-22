@@ -6,7 +6,7 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>'
 }).addTo(map);
 
-// script.js (continued)
+// Define a square icon
 const squareIcon = L.icon({
   iconUrl: 'square-flag.png', // Path to your square flag image
   iconSize: [20, 20], // Size of the icon in pixels
@@ -30,3 +30,6 @@ async function addLocation(placeName) {
 
 // Example usage
 addLocation('Porto, Portugal');
+addLocation('Lisbon, Portugal');
+addLocation('Faro, Portugal');
+addLocation('Campina Grande, Brazil');
