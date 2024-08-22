@@ -1,7 +1,17 @@
 /* styles.css */
+html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #000000; /* Ensure the background matches the map theme */
+}
+
 #map {
   height: 250px; /* Height in pixels */
   width: 400px;  /* Width in pixels */
+  border: 2px solid #ffffff; /* Thin white border */
 }
 
 .leaflet-container {
