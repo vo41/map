@@ -9,7 +9,7 @@ html, body {
 }
 
 #map {
-  height: 247px; /* Updated height in pixels */
+  height: 245px; /* Updated height in pixels */
   width: 390px;  /* Updated width in pixels */
   border: 1px solid #cccccc; /* Light grey border */
 }
@@ -27,15 +27,19 @@ html, body {
   line-height: 32px; /* Vertically center text */
 }
 
-/* Apply Arimo Bold font to popups */
+/* Remove font highlight and background */
 .leaflet-popup-content-wrapper {
   font-family: 'Arimo', sans-serif;
   font-weight: bold;
+  background: none; /* Remove any background */
+  border: none; /* Remove any border */
 }
 
-/* Style popups with rounded edges */
+/* Style popups with smaller size and rounded edges */
 .leaflet-popup-content {
-  border-radius: 8px; /* Rounded edges for the popup */
+  border-radius: 4px; /* Smaller rounded edges for the popup */
   background-color: #333; /* Dark background for popup */
   color: #fff; /* White text for better contrast */
+  font-size: 12px; /* Smaller font size for the popup */
+  padding: 5px; /* Reduced padding */
 }
