@@ -38,17 +38,9 @@ html, body {
   display: none; /* Hide the close button */
 }
 
-/* Style for zoom controls */
-.leaflet-control-zoom-in, .leaflet-control-zoom-out {
-  background-color: #fff; /* Default background */
-  color: #000; /* Default text color */
-  border: 1px solid #ccc; /* Light grey border */
-  border-radius: 0; /* Rectangular edges */
-  width: 30px; /* Button width */
-  height: 30px; /* Button height */
-  font-size: 16px; /* Font size for better readability */
-  text-align: center; /* Center text */
-  line-height: 30px; /* Vertically center text */
+/* Hide the zoom controls */
+.leaflet-control-zoom {
+  display: none;
 }
 
 /* Hide default attribution control */
