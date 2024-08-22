@@ -1,6 +1,8 @@
 // script.js
 const map = L.map('map', {
-  attributionControl: false // Disable default attribution control
+  attributionControl: false, // Disable default attribution control
+  dragging: true, // Enable dragging (to handle restrictions)
+  zoomControl: true // Enable zoom controls
 }).setView([0, 0], 1); // Set initial view completely zoomed out
 
 // Add a dark tile layer with minimal attribution
@@ -8,10 +10,23 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
   attribution: '' // Leave attribution empty or put minimal attribution if needed
 }).addTo(map);
 
+// Set the map bounds to restrict panning
+const bounds = L.latLngBounds(
+  L.latLng(-85, -180), // South-West corner
+  L.latLng(85, 180)    // North-East corner
+);
+map.setMaxBounds(bounds);
+
 // Optionally, add a custom attribution control
 L.control.attribution({
   prefix: ''
 }).addTo(map);
+
+// Restrict panning within the defined bounds
+map.on('moveend', function() {
+  if (map.getBounds().intersects(bounds)) return;
+  map.setView([0, 0], 1); // Center the map if bounds are exceeded
+});
 
 // Define a square icon
 const squareIcon = L.icon({
