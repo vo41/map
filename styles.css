@@ -9,9 +9,9 @@ html, body {
 }
 
 #map {
-  height: 250px; /* Updated height in pixels */
+  height: 248px; /* Updated height in pixels */
   width: 390px;  /* Updated width in pixels */
-  border: 1px solid #d3d3d3; /* Light grey border */
+  border: 1px solid #cccccc; /* Light grey border */
 }
 
 /* Restore default button shapes and colors */
