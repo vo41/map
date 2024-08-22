@@ -1,8 +1,14 @@
 // script.js
 const map = L.map('map', {
   attributionControl: false, // Disable default attribution control
-  dragging: true, // Enable dragging
-  zoomControl: true // Enable zoom controls
+  dragging: false, // Disable dragging
+  zoomControl: false, // Disable zoom controls
+  scrollWheelZoom: false, // Disable zooming with scroll wheel
+  doubleClickZoom: false, // Disable zoom on double-click
+  boxZoom: false, // Disable box zooming
+  keyboard: false, // Disable keyboard navigation
+  touchZoom: false, // Disable touch zooming
+  bounceAtZoomLimits: false // Disable bounce at zoom limits
 }).setView([0, 0], 1); // Initial view zoomed out
 
 // Add a dark tile layer
@@ -17,7 +23,13 @@ const bounds = L.latLngBounds(
 );
 map.setMaxBounds(bounds);
 
-// Restrict panning within the defined bounds
+// Ensure the map is centered and zoomed out to show all continents
+map.on('zoomend', function() {
+  if (map.getZoom() !== 1) {
+    map.setZoom(1); // Set zoom level to fully zoomed out
+  }
+});
+
 map.on('moveend', function() {
   if (map.getBounds().intersects(bounds)) return;
   map.setView([0, 0], 1); // Center the map if bounds are exceeded
@@ -32,8 +44,12 @@ const squareIcon = L.icon({
 });
 
 // Define a click event to show popups
-function onMarkerClick(e) {
+function onMarkerMouseOver(e) {
   e.target.openPopup();
+}
+
+function onMarkerMouseOut(e) {
+  e.target.closePopup(); // Close the popup on mouse out
 }
 
 // Simplify popup content to show only city and country
@@ -68,9 +84,5 @@ Promise.all([
       const { lat, lon, display_name } = location;
       const marker = L.marker([lat, lon], { icon: squareIcon })
         .bindPopup(getPopupContent(display_name))
-        .on('mouseover', onMarkerClick)
-        .on('click', onMarkerClick);
-      marker.addTo(map); // Add markers directly to the map
-    }
-  });
-});
+        .on('mouseover', onMarkerMouseOver)
+        .on('mouseout', onMarkerMouseOu
