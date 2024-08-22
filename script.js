@@ -17,11 +17,6 @@ const bounds = L.latLngBounds(
 );
 map.setMaxBounds(bounds);
 
-// Optionally, add a custom attribution control
-L.control.attribution({
-  prefix: ''
-}).addTo(map);
-
 // Restrict panning within the defined bounds
 map.on('moveend', function() {
   if (map.getBounds().intersects(bounds)) return;
@@ -30,7 +25,7 @@ map.on('moveend', function() {
 
 // Define a square icon
 const squareIcon = L.icon({
-  iconUrl: 'square-flag.png', // Path to your square flag image
+  iconUrl: 'square.png', // Path to your square flag image
   iconSize: [20, 20], // Size of the icon in pixels
   iconAnchor: [10, 10], // Point of the icon which will correspond to marker's location
   popupAnchor: [0, -10] // Point from which the popup should open relative to the iconAnchor
