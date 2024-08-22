@@ -8,7 +8,9 @@ const map = L.map('map', {
   doubleClickZoom: true, // Enable zoom on double-click
   boxZoom: true, // Enable box zooming
   keyboard: true, // Enable keyboard navigation
-  touchZoom: true // Enable touch zooming
+  touchZoom: true, // Enable touch zooming
+  worldCopyJump: true, // Enable map looping (world wrapping)
+  continuousWorld: true // Allow continuous panning across world edges
 });
 
 // Add a dark tile layer
