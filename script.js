@@ -1,4 +1,6 @@
 // script.js
+
+// Initialize the map
 const map = L.map('map', {
   attributionControl: false, // Disable default attribution control
   dragging: false, // Disable dragging
@@ -12,7 +14,7 @@ const map = L.map('map', {
 }).setView([0, 0], 1); // Initial view zoomed out
 
 // Add a dark tile layer
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { // Use light tiles for better visibility
   attribution: '' // Minimal attribution
 }).addTo(map);
 
@@ -31,23 +33,25 @@ map.on('zoomend', function() {
 });
 
 map.on('moveend', function() {
-  if (map.getBounds().intersects(bounds)) return;
-  map.setView([0, 0], 1); // Center the map if bounds are exceeded
+  if (!map.getBounds().intersects(bounds)) {
+    map.setView([0, 0], 1); // Center the map if bounds are exceeded
+  }
 });
 
 // Define a square icon with increased size
 const squareIcon = L.icon({
   iconUrl: 'square.png', // Path to your square flag image
-  iconSize: [11.4375, 11.4375], // Increased size by 15%
-  iconAnchor: [5.71875, 5.71875], // Adjust anchor point
+  iconSize: [13.125, 13.125], // Increased size by 15%
+  iconAnchor: [6.5625, 6.5625], // Adjust anchor point
   popupAnchor: [0, -15] // Popup position
 });
 
-// Define a click event to show popups
+// Define a mouseover event to show popups
 function onMarkerMouseOver(e) {
   e.target.openPopup();
 }
 
+// Define a mouseout event to hide popups
 function onMarkerMouseOut(e) {
   e.target.closePopup(); // Close the popup on mouse out
 }
@@ -62,13 +66,18 @@ function getPopupContent(display_name) {
 
 // Add markers without clustering
 async function addLocation(placeName) {
-  const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${placeName}&format=json&accept-language=en`);
-  const data = await response.json();
-  if (data.length > 0) {
-    const { lat, lon, display_name } = data[0];
-    return { lat, lon, display_name };
-  } else {
-    alert('Location not found');
+  try {
+    const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${placeName}&format=json&accept-language=en`);
+    const data = await response.json();
+    if (data.length > 0) {
+      const { lat, lon, display_name } = data[0];
+      return { lat, lon, display_name };
+    } else {
+      console.warn('Location not found:', placeName);
+      return null;
+    }
+  } catch (error) {
+    console.error('Error fetching location data:', error);
     return null;
   }
 }
@@ -85,4 +94,8 @@ Promise.all([
       const marker = L.marker([lat, lon], { icon: squareIcon })
         .bindPopup(getPopupContent(display_name))
         .on('mouseover', onMarkerMouseOver)
-        .on('mouseout', onMarkerMouseOu
+        .on('mouseout', onMarkerMouseOut); // Close popup on mouse out
+      marker.addTo(map); // Add markers directly to the map
+    }
+  });
+});
