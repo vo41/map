@@ -23,17 +23,25 @@ map.on('moveend', function() {
   map.setView([0, 0], 1); // Center the map if bounds are exceeded
 });
 
-// Define a square icon with increased size (25% larger than before)
+// Define a square icon with increased size (50% larger than before)
 const squareIcon = L.icon({
   iconUrl: 'square.png', // Path to your square flag image
-  iconSize: [6.25, 6.25], // Size of the icon in pixels (25% larger than 5x5)
-  iconAnchor: [3.125, 3.125], // Adjust anchor point
-  popupAnchor: [0, -12] // Point from which the popup should open relative to the iconAnchor
+  iconSize: [9.375, 9.375], // Size of the icon in pixels (50% larger than 6.25x6.25)
+  iconAnchor: [4.6875, 4.6875], // Adjust anchor point
+  popupAnchor: [0, -15] // Point from which the popup should open relative to the iconAnchor
 });
 
 // Define a click event to show popups
 function onMarkerClick(e) {
   e.target.openPopup();
+}
+
+// Simplify popup content to show only city and country
+function getPopupContent(display_name) {
+  const parts = display_name.split(', ');
+  const city = parts.length > 0 ? parts[0] : 'Unknown';
+  const country = parts.length > 1 ? parts[parts.length - 1] : 'Unknown';
+  return `${city}, ${country}`;
 }
 
 async function addLocation(placeName) {
@@ -43,7 +51,7 @@ async function addLocation(placeName) {
     const { lat, lon, display_name } = data[0];
     const marker = L.marker([lat, lon], { icon: squareIcon })
       .addTo(map)
-      .bindPopup(display_name);
+      .bindPopup(getPopupContent(display_name));
 
     // Show popup on click or hover
     marker.on('mouseover', onMarkerClick);
@@ -54,7 +62,9 @@ async function addLocation(placeName) {
 }
 
 // Add locations
-addLocation('Porto, Portugal');
-addLocation('Lisbon, Portugal');
-addLocation('Faro, Portugal');
-addLocation('Campina Grande, Brazil');
+Promise.all([
+  addLocation('Porto, Portugal'),
+  addLocation('Lisbon, Portugal'),
+  addLocation('Faro, Portugal'),
+  addLocation('Campina Grande, Brazil')
+]);
