@@ -5,8 +5,8 @@ const map = L.map('map', {
   zoomControl: true // Enable zoom controls
 }).setView([0, 0], 1); // Set initial view completely zoomed out
 
-// Add a dark tile layer with minimal attribution
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+// Add a dark tile layer for a night-time appearance
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
   attribution: '' // Leave attribution empty or put minimal attribution if needed
 }).addTo(map);
 
@@ -23,23 +23,31 @@ map.on('moveend', function() {
   map.setView([0, 0], 1); // Center the map if bounds are exceeded
 });
 
-// Define a square icon
+// Define a square icon with resized dimensions
 const squareIcon = L.icon({
   iconUrl: 'square.png', // Path to your square flag image
-  iconSize: [20, 20], // Size of the icon in pixels
-  iconAnchor: [10, 10], // Point of the icon which will correspond to marker's location
+  iconSize: [5, 5], // Size of the icon in pixels (25% of original 20x20)
+  iconAnchor: [2.5, 2.5], // Adjust anchor point
   popupAnchor: [0, -10] // Point from which the popup should open relative to the iconAnchor
 });
+
+// Define a click event to show popups
+function onMarkerClick(e) {
+  e.target.openPopup();
+}
 
 async function addLocation(placeName) {
   const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${placeName}&format=json`);
   const data = await response.json();
   if (data.length > 0) {
     const { lat, lon, display_name } = data[0];
-    L.marker([lat, lon], { icon: squareIcon })
+    const marker = L.marker([lat, lon], { icon: squareIcon })
       .addTo(map)
-      .bindPopup(display_name)
-      .openPopup();
+      .bindPopup(display_name);
+
+    // Show popup on click or hover
+    marker.on('mouseover', onMarkerClick);
+    marker.on('click', onMarkerClick);
   } else {
     alert('Location not found');
   }
