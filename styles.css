@@ -28,7 +28,7 @@ html, body {
   background-color: #333; /* Dark background for popup */
   color: #fff; /* White text for better contrast */
   font-size: 12px; /* Smaller font size for the popup content */
-  padding: 5px; /* Decreased padding */
+  padding: 3px; /* Reduced padding for smaller pop-up */
   border-radius: 0; /* Remove rounding */
   text-align: center; /* Center text */
 }
