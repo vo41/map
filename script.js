@@ -3,8 +3,8 @@
 // Initialize the map
 const map = L.map('map', {
   attributionControl: false, // Disable default attribution control
-  dragging: false, // Disable dragging
-  zoomControl: false, // Disable zoom controls
+  dragging: true, // Enable dragging
+  zoomControl: true, // Enable zoom controls
   scrollWheelZoom: false, // Disable zooming with scroll wheel
   doubleClickZoom: false, // Disable zoom on double-click
   boxZoom: false, // Disable box zooming
@@ -14,7 +14,7 @@ const map = L.map('map', {
 }).setView([0, 0], 1); // Initial view zoomed out
 
 // Add a dark tile layer
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { // Use light tiles for better visibility
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
   attribution: '' // Minimal attribution
 }).addTo(map);
 
@@ -41,9 +41,9 @@ map.on('moveend', function() {
 // Define a square icon with increased size
 const squareIcon = L.icon({
   iconUrl: 'square.png', // Path to your square flag image
-  iconSize: [13.125, 13.125], // Increased size by 15%
-  iconAnchor: [6.5625, 6.5625], // Adjust anchor point
-  popupAnchor: [0, -15] // Popup position
+  iconSize: [15.9375, 15.9375], // Increased size by 50%
+  iconAnchor: [7.96875, 7.96875], // Adjust anchor point
+  popupAnchor: [0, -20] // Popup position
 });
 
 // Define a mouseover event to show popups
@@ -57,21 +57,27 @@ function onMarkerMouseOut(e) {
 }
 
 // Simplify popup content to show only city and country
-function getPopupContent(display_name) {
-  const parts = display_name.split(', ');
-  const city = parts.length > 0 ? parts[0] : 'Unknown';
-  const country = parts.length > 1 ? parts[parts.length - 1] : 'Unknown';
-  return `${city}, ${country}`;
+function getPopupContent(locations) {
+  return locations.map(loc => `${loc.city}, ${loc.country}`).join('<br>');
 }
 
-// Add markers without clustering
+// Create a cluster group
+const markers = L.markerClusterGroup({
+  showCoverageOnHover: false,
+  zoomToBoundsOnClick: true
+});
+
+// Add markers to the cluster group
 async function addLocation(placeName) {
   try {
     const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${placeName}&format=json&accept-language=en`);
     const data = await response.json();
     if (data.length > 0) {
       const { lat, lon, display_name } = data[0];
-      return { lat, lon, display_name };
+      const parts = display_name.split(', ');
+      const city = parts.length > 0 ? parts[0] : 'Unknown';
+      const country = parts.length > 1 ? parts[parts.length - 1] : 'Unknown';
+      return { lat, lon, city, country };
     } else {
       console.warn('Location not found:', placeName);
       return null;
@@ -88,14 +94,26 @@ Promise.all([
   addLocation('Faro, Portugal'),
   addLocation('Campina Grande, Brazil')
 ]).then(locations => {
+  const locationMap = new Map();
   locations.forEach(location => {
     if (location) {
-      const { lat, lon, display_name } = location;
-      const marker = L.marker([lat, lon], { icon: squareIcon })
-        .bindPopup(getPopupContent(display_name))
-        .on('mouseover', onMarkerMouseOver)
-        .on('mouseout', onMarkerMouseOut); // Close popup on mouse out
-      marker.addTo(map); // Add markers directly to the map
+      const { lat, lon, city, country } = location;
+      const key = `${lat}-${lon}`;
+      if (!locationMap.has(key)) {
+        locationMap.set(key, []);
+      }
+      locationMap.get(key).push({ city, country });
     }
   });
+
+  locationMap.forEach((locs, key) => {
+    const [lat, lon] = key.split('-').map(Number);
+    const marker = L.marker([lat, lon], { icon: squareIcon })
+      .bindPopup(getPopupContent(locs))
+      .on('mouseover', onMarkerMouseOver)
+      .on('mouseout', onMarkerMouseOut);
+    markers.addLayer(marker);
+  });
+
+  map.addLayer(markers); // Add the cluster group to the map
 });
