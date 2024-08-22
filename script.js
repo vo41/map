@@ -1,16 +1,16 @@
-// script.js
+// Initialize the map
 const map = L.map('map', {
   attributionControl: false, // Disable default attribution control
-  dragging: true, // Enable dragging (to handle restrictions)
+  dragging: true, // Enable dragging
   zoomControl: true // Enable zoom controls
-}).setView([0, 0], 1); // Set initial view completely zoomed out
+}).setView([0, 0], 1); // Initial view zoomed out
 
-// Add a dark tile layer for a night-time appearance
+// Add a dark tile layer
 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-  attribution: '' // Leave attribution empty or put minimal attribution if needed
+  attribution: '' // Minimal attribution
 }).addTo(map);
 
-// Set the map bounds to restrict panning
+// Restrict panning to the bounds
 const bounds = L.latLngBounds(
   L.latLng(-85, -180), // South-West corner
   L.latLng(85, 180)    // North-East corner
@@ -23,12 +23,12 @@ map.on('moveend', function() {
   map.setView([0, 0], 1); // Center the map if bounds are exceeded
 });
 
-// Define a square icon with increased size (50% larger than before)
+// Define a square icon
 const squareIcon = L.icon({
   iconUrl: 'square.png', // Path to your square flag image
-  iconSize: [9.375, 9.375], // Size of the icon in pixels (50% larger than 6.25x6.25)
+  iconSize: [9.375, 9.375], // Increased size
   iconAnchor: [4.6875, 4.6875], // Adjust anchor point
-  popupAnchor: [0, -15] // Point from which the popup should open relative to the iconAnchor
+  popupAnchor: [0, -15] // Popup position
 });
 
 // Define a click event to show popups
@@ -57,9 +57,10 @@ async function addLocation(placeName) {
   }
 }
 
-// Marker clustering setup
+// Initialize marker cluster group
 const markers = L.layerGroup().addTo(map);
-const markerClusterGroup = L.markerClusterGroup().addTo(markers);
+const markerClusterGroup = L.markerClusterGroup();
+markerClusterGroup.addTo(markers);
 
 Promise.all([
   addLocation('Porto, Portugal'),
