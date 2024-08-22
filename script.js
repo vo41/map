@@ -5,11 +5,11 @@ const map = L.map('map', {
   attributionControl: false, // Disable default attribution control
   dragging: true, // Enable dragging
   zoomControl: true, // Enable zoom controls
-  scrollWheelZoom: false, // Disable zooming with scroll wheel
-  doubleClickZoom: false, // Disable zoom on double-click
-  boxZoom: false, // Disable box zooming
-  keyboard: false, // Disable keyboard navigation
-  touchZoom: false, // Disable touch zooming
+  scrollWheelZoom: true, // Enable zooming with scroll wheel
+  doubleClickZoom: true, // Enable zoom on double-click
+  boxZoom: true, // Enable box zooming
+  keyboard: true, // Enable keyboard navigation
+  touchZoom: true, // Enable touch zooming
   bounceAtZoomLimits: false // Disable bounce at zoom limits
 }).setView([0, 0], 1); // Initial view zoomed out
 
@@ -41,9 +41,9 @@ map.on('moveend', function() {
 // Define a square icon with decreased size
 const squareIcon = L.icon({
   iconUrl: 'square.png', // Path to your square flag image
-  iconSize: [11.4375, 11.4375], // Decreased size by 10%
-  iconAnchor: [5.71875, 5.71875], // Adjust anchor point
-  popupAnchor: [0, -20] // Popup position
+  iconSize: [10.875, 10.875], // Decreased size by 10%
+  iconAnchor: [5.4375, 5.4375], // Adjust anchor point
+  popupAnchor: [0, -15] // Popup position
 });
 
 // Define a mouseover event to show popups
