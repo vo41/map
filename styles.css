@@ -14,12 +14,12 @@ html, body {
   border: 1px solid #ffffff; /* Thin 1-pixel white border */
 }
 
-/* Style zoom control buttons */
+/* Style zoom control buttons with rounded edges */
 .leaflet-control-zoom-in, .leaflet-control-zoom-out {
   background-color: #333; /* Dark background */
   color: #fff; /* White text */
   border: 1px solid #fff; /* White border */
-  border-radius: 0; /* Squared edges */
+  border-radius: 4px; /* Rounded edges */
   width: 32px; /* Button width */
   height: 32px; /* Button height */
   font-size: 16px; /* Font size for better readability */
@@ -39,9 +39,9 @@ html, body {
   font-weight: bold;
 }
 
-/* Style popups to have square edges */
+/* Style popups with rounded edges */
 .leaflet-popup-content {
-  border-radius: 0; /* Squared edges for the popup */
+  border-radius: 8px; /* Rounded edges for the popup */
   background-color: #333; /* Dark background for popup */
   color: #fff; /* White text for better contrast */
 }
