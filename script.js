@@ -53,5 +53,8 @@ async function addLocation(placeName) {
   }
 }
 
-// Example usage
+// Add locations
 addLocation('Porto, Portugal');
+addLocation('Lisbon, Portugal');
+addLocation('Faro, Portugal');
+addLocation('Campina Grande, Brazil');
