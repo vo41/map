@@ -38,11 +38,11 @@ map.on('moveend', function() {
   }
 });
 
-// Define a square icon with increased size
+// Define a square icon with decreased size
 const squareIcon = L.icon({
   iconUrl: 'square.png', // Path to your square flag image
-  iconSize: [15.9375, 15.9375], // Increased size by 50%
-  iconAnchor: [7.96875, 7.96875], // Adjust anchor point
+  iconSize: [11.4375, 11.4375], // Decreased size by 10%
+  iconAnchor: [5.71875, 5.71875], // Adjust anchor point
   popupAnchor: [0, -20] // Popup position
 });
 
@@ -61,13 +61,7 @@ function getPopupContent(locations) {
   return locations.map(loc => `${loc.city}, ${loc.country}`).join('<br>');
 }
 
-// Create a cluster group
-const markers = L.markerClusterGroup({
-  showCoverageOnHover: false,
-  zoomToBoundsOnClick: true
-});
-
-// Add markers to the cluster group
+// Add markers without clustering
 async function addLocation(placeName) {
   try {
     const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${placeName}&format=json&accept-language=en`);
@@ -111,9 +105,7 @@ Promise.all([
     const marker = L.marker([lat, lon], { icon: squareIcon })
       .bindPopup(getPopupContent(locs))
       .on('mouseover', onMarkerMouseOver)
-      .on('mouseout', onMarkerMouseOut);
-    markers.addLayer(marker);
+      .on('mouseout', onMarkerMouseOut); // Close popup on mouse out
+    marker.addTo(map); // Add markers directly to the map
   });
-
-  map.addLayer(markers); // Add the cluster group to the map
 });
