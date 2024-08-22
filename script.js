@@ -44,7 +44,7 @@ function getPopupContent(display_name) {
   return `${city}, ${country}`;
 }
 
-// Add markers with clustering
+// Add markers without clustering
 async function addLocation(placeName) {
   const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${placeName}&format=json`);
   const data = await response.json();
@@ -56,11 +56,6 @@ async function addLocation(placeName) {
     return null;
   }
 }
-
-// Initialize marker cluster group
-const markers = L.layerGroup().addTo(map);
-const markerClusterGroup = L.markerClusterGroup();
-markerClusterGroup.addTo(markers);
 
 Promise.all([
   addLocation('Porto, Portugal'),
@@ -75,7 +70,7 @@ Promise.all([
         .bindPopup(getPopupContent(display_name))
         .on('mouseover', onMarkerClick)
         .on('click', onMarkerClick);
-      markerClusterGroup.addLayer(marker);
+      marker.addTo(map); // Add markers directly to the map
     }
   });
 });
