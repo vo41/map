@@ -1,14 +1,17 @@
 // script.js
-const map = L.map('map').setView([51.505, -0.09], 2); // Set initial view
+const map = L.map('map', {
+  attributionControl: false // Disable default attribution control
+}).setView([0, 0], 1); // Set initial view completely zoomed out
 
-// Add a dark tile layer
+// Add a dark tile layer with minimal attribution
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>'
+  attribution: '' // Leave attribution empty or put minimal attribution if needed
 }).addTo(map);
 
-// Remove default attribution control
-map.attributionControl.setPrefix('');
-
+// Optionally, add a custom attribution control
+L.control.attribution({
+  prefix: ''
+}).addTo(map);
 
 // Define a square icon
 const squareIcon = L.icon({
@@ -34,6 +37,3 @@ async function addLocation(placeName) {
 
 // Example usage
 addLocation('Porto, Portugal');
-addLocation('Lisbon, Portugal');
-addLocation('Faro, Portugal');
-addLocation('Campina Grande, Brazil');
