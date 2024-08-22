@@ -9,17 +9,38 @@ html, body {
 }
 
 #map {
-  height: 250px; /* Height in pixels */
-  width: 400px;  /* Width in pixels */
-  border: 2px solid #ffffff; /* Thin white border */
+  height: 230px; /* Updated height in pixels */
+  width: 390px;  /* Updated width in pixels */
+  border: 1px solid #ffffff; /* Thin 1-pixel white border */
 }
 
-.leaflet-container {
-  background-color: #000000; /* Dark background color for map */
+/* Style zoom control buttons */
+.leaflet-control-zoom-in, .leaflet-control-zoom-out {
+  background-color: #333; /* Dark background */
+  color: #fff; /* White text */
+  border: 1px solid #fff; /* White border */
+  border-radius: 0; /* Squared edges */
+  width: 32px; /* Button width */
+  height: 32px; /* Button height */
+}
+
+/* Invert colors when zooming */
+.leaflet-control-zoom-in:active, .leaflet-control-zoom-out:active {
+  background-color: #fff; /* Inverted background */
+  color: #333; /* Inverted text color */
 }
 
 /* Apply Arimo Bold font to popups */
 .leaflet-popup-content-wrapper {
   font-family: 'Arimo', sans-serif;
   font-weight: bold;
+}
+
+/* Increase hover/click area for markers */
+.leaflet-marker-icon {
+  cursor: pointer; /* Pointer cursor for better interaction */
+}
+
+.leaflet-marker-icon:hover {
+  transform: scale(1.5); /* Enlarge marker on hover */
 }
