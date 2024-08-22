@@ -50,3 +50,8 @@ html, body {
   text-align: center; /* Center text */
   line-height: 30px; /* Vertically center text */
 }
+
+/* Hide default attribution control */
+.leaflet-control-attribution {
+  display: none;
+}
