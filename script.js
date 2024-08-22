@@ -4,22 +4,25 @@
 const map = L.map('map', {
   dragging: true, // Enable dragging
   zoomControl: false, // Disable zoom controls
-  scrollWheelZoom: true, // Enable zooming with scroll wheel
-  doubleClickZoom: true, // Enable zoom on double-click
-  boxZoom: true, // Enable box zooming
-  keyboard: true, // Enable keyboard navigation
-  touchZoom: true, // Enable touch zooming
+  scrollWheelZoom: false, // Disable zooming with scroll wheel
+  doubleClickZoom: false, // Disable zoom on double-click
+  boxZoom: false, // Disable box zooming
+  keyboard: false, // Disable keyboard navigation
+  touchZoom: false, // Disable touch zooming
   maxBounds: [[-90, -180], [90, 180]], // Limit panning to map edges
   maxBoundsViscosity: 1.0, // Prevent panning outside the map
   worldCopyJump: true, // Enable map looping (world wrapping)
   continuousWorld: true, // Allow continuous panning across world edges
-  zoomSnap: 0.5 // Allow smooth zooming
+  zoomSnap: 1, // Standard zoom snapping
+  zoomDelta: 0.5 // Slightly smoother zoom changes
 });
 
 // Add a dark tile layer with minimal delay
 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
   attribution: '', // No attribution text
-  noWrap: true // Prevent map wrapping
+  noWrap: true, // Prevent map wrapping
+  detectRetina: true, // Load higher resolution tiles if available
+  updateWhenIdle: true, // Only update the map when idle to improve performance
 }).addTo(map);
 
 // Define a smaller square icon
