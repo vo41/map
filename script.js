@@ -1,4 +1,4 @@
-// Initialize the map
+// script.js
 const map = L.map('map', {
   attributionControl: false, // Disable default attribution control
   dragging: true, // Enable dragging
