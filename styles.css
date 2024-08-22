@@ -43,3 +43,8 @@ html, body {
   font-size: 12px; /* Smaller font size for the popup */
   padding: 5px; /* Reduced padding */
 }
+
+/* Increase clickable area of markers */
+.leaflet-marker-icon {
+  cursor: pointer; /* Show pointer cursor on hover */
+}
