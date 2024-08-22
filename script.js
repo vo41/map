@@ -23,12 +23,12 @@ map.on('moveend', function() {
   map.setView([0, 0], 1); // Center the map if bounds are exceeded
 });
 
-// Define a square icon with reduced size
+// Define a square icon with increased size
 const squareIcon = L.icon({
   iconUrl: 'square.png', // Path to your square flag image
-  iconSize: [4.6875, 4.6875], // Reduced size by 50%
-  iconAnchor: [2.34375, 2.34375], // Adjust anchor point
-  popupAnchor: [0, -10] // Popup position
+  iconSize: [11.4375, 11.4375], // Increased size by 15%
+  iconAnchor: [5.71875, 5.71875], // Adjust anchor point
+  popupAnchor: [0, -15] // Popup position
 });
 
 // Define a click event to show popups
@@ -46,7 +46,7 @@ function getPopupContent(display_name) {
 
 // Add markers without clustering
 async function addLocation(placeName) {
-  const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${placeName}&format=json`);
+  const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${placeName}&format=json&accept-language=en`);
   const data = await response.json();
   if (data.length > 0) {
     const { lat, lon, display_name } = data[0];
