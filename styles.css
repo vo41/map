@@ -5,11 +5,11 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #000000; /* Ensure the background matches the map theme */
+  background-color: #000000; /* Background color to match the map theme */
 }
 
 #map {
-  height: 248px; /* Updated height in pixels */
+  height: 247px; /* Updated height in pixels */
   width: 390px;  /* Updated width in pixels */
   border: 1px solid #cccccc; /* Light grey border */
 }
