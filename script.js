@@ -23,12 +23,12 @@ map.on('moveend', function() {
   map.setView([0, 0], 1); // Center the map if bounds are exceeded
 });
 
-// Define a square icon with resized dimensions
+// Define a square icon with increased size (25% larger than before)
 const squareIcon = L.icon({
   iconUrl: 'square.png', // Path to your square flag image
-  iconSize: [5, 5], // Size of the icon in pixels (25% of original 20x20)
-  iconAnchor: [2.5, 2.5], // Adjust anchor point
-  popupAnchor: [0, -10] // Point from which the popup should open relative to the iconAnchor
+  iconSize: [6.25, 6.25], // Size of the icon in pixels (25% larger than 5x5)
+  iconAnchor: [3.125, 3.125], // Adjust anchor point
+  popupAnchor: [0, -12] // Point from which the popup should open relative to the iconAnchor
 });
 
 // Define a click event to show popups
