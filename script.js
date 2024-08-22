@@ -2,20 +2,18 @@
 
 // Initialize the map
 const map = L.map('map', {
-  attributionControl: false, // Disable default attribution control
   dragging: true, // Enable dragging
   zoomControl: true, // Enable zoom controls
   scrollWheelZoom: true, // Enable zooming with scroll wheel
   doubleClickZoom: true, // Enable zoom on double-click
   boxZoom: true, // Enable box zooming
   keyboard: true, // Enable keyboard navigation
-  touchZoom: true, // Enable touch zooming
-  bounceAtZoomLimits: false // Disable bounce at zoom limits
-}).setView([0, 0], 1); // Initial view zoomed out
+  touchZoom: true // Enable touch zooming
+}).setView([0, 0], 1); // Center the map and set zoom to show the whole world
 
 // Add a dark tile layer
 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-  attribution: '' // Minimal attribution
+  attribution: '© OpenStreetMap contributors'
 }).addTo(map);
 
 // Restrict panning to the bounds
@@ -38,42 +36,27 @@ map.on('moveend', function() {
   }
 });
 
-// Define a square icon with decreased size
+// Define a square icon with adjusted size
 const squareIcon = L.icon({
   iconUrl: 'square.png', // Path to your square flag image
-  iconSize: [11.4375, 11.4375], // Slightly increased size
-  iconAnchor: [5.71875, 5.71875], // Adjust anchor point
-  popupAnchor: [0, -20] // Popup position
+  iconSize: [15, 15], // Adjusted size
+  iconAnchor: [7.5, 7.5], // Adjust anchor point
+  popupAnchor: [0, -15] // Popup position
 });
 
-// Define a mouseover event to show popups
-function onMarkerMouseOver(e) {
-  e.target.openPopup();
-}
-
-// Define a mouseout event to hide popups
-function onMarkerMouseOut(e) {
-  e.target.closePopup(); // Close the popup on mouse out
-}
-
-// Simplify popup content to show only city and country
-function getPopupContent(locations) {
-  return locations.map(loc => `${loc.city}, ${loc.country}`).join('<br>');
-}
-
-// Add markers without clustering
-async function addLocation(placeName) {
+// Function to get location data from OpenStreetMap API
+async function getLocationData(query) {
   try {
-    const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${placeName}&format=json&accept-language=en`);
+    const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${query}&format=json&accept-language=en`);
     const data = await response.json();
     if (data.length > 0) {
       const { lat, lon, display_name } = data[0];
       const parts = display_name.split(', ');
-      const city = parts.length > 0 ? parts[0] : 'Unknown';
-      const country = parts.length > 1 ? parts[parts.length - 1] : 'Unknown';
+      const city = parts[0] || 'Unknown';
+      const country = parts[parts.length - 1] || 'Unknown';
       return { lat, lon, city, country };
     } else {
-      console.warn('Location not found:', placeName);
+      console.warn('Location not found:', query);
       return null;
     }
   } catch (error) {
@@ -82,30 +65,21 @@ async function addLocation(placeName) {
   }
 }
 
-Promise.all([
-  addLocation('Porto, Portugal'),
-  addLocation('Lisbon, Portugal'),
-  addLocation('Faro, Portugal'),
-  addLocation('Campina Grande, Brazil')
-]).then(locations => {
-  const locationMap = new Map();
-  locations.forEach(location => {
+// Locations to add to the map
+const locations = [
+  'Porto, Portugal',
+  'Lisbon, Portugal',
+  'Faro, Portugal',
+  'Campina Grande, Brazil'
+];
+
+Promise.all(locations.map(getLocationData)).then(results => {
+  results.forEach(location => {
     if (location) {
       const { lat, lon, city, country } = location;
-      const key = `${lat}-${lon}`;
-      if (!locationMap.has(key)) {
-        locationMap.set(key, []);
-      }
-      locationMap.get(key).push({ city, country });
+      L.marker([lat, lon], { icon: squareIcon })
+        .bindPopup(`<strong>${city}</strong><br>${country}`)
+        .addTo(map);
     }
-  });
-
-  locationMap.forEach((locs, key) => {
-    const [lat, lon] = key.split('-').map(Number);
-    const marker = L.marker([lat, lon], { icon: squareIcon })
-      .bindPopup(getPopupContent(locs))
-      .on('mouseover', onMarkerMouseOver)
-      .on('mouseout', onMarkerMouseOut); // Close popup on mouse out
-    marker.addTo(map); // Add markers directly to the map
   });
 });
