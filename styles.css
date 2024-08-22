@@ -14,7 +14,7 @@ html, body {
   border: 1px solid #cccccc; /* Light grey border */
 }
 
-/* Restore default button shapes and colors */
+/* Map tile layer controls (zoom buttons) */
 .leaflet-control-zoom-in, .leaflet-control-zoom-out {
   background-color: #fff; /* Default background */
   color: #000; /* Default text color */
@@ -27,21 +27,22 @@ html, body {
   line-height: 32px; /* Vertically center text */
 }
 
-/* Remove font highlight and background */
+/* Rectangular pop-up styling */
 .leaflet-popup-content-wrapper {
   font-family: 'Arimo', sans-serif;
   font-weight: bold;
-  background: none; /* Remove any background */
-  border: none; /* Remove any border */
+  background: #333; /* Dark background for popup */
+  border-radius: 0; /* Rectangular pop-ups */
+  border: 1px solid #666; /* Border color */
 }
 
-/* Style popups with smaller size and rounded edges */
+/* Rectangular shape and styling for pop-ups */
 .leaflet-popup-content {
-  border-radius: 4px; /* Smaller rounded edges for the popup */
+  border-radius: 0; /* Remove rounding */
   background-color: #333; /* Dark background for popup */
   color: #fff; /* White text for better contrast */
   font-size: 12px; /* Smaller font size for the popup */
-  padding: 5px; /* Reduced padding */
+  padding: 10px; /* Increased padding */
 }
 
 /* Increase clickable area of markers */
