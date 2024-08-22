@@ -3,45 +3,25 @@
 // Initialize the map
 const map = L.map('map', {
   dragging: true, // Enable dragging
-  zoomControl: true, // Enable zoom controls
+  zoomControl: false, // Disable zoom controls
   scrollWheelZoom: true, // Enable zooming with scroll wheel
   doubleClickZoom: true, // Enable zoom on double-click
   boxZoom: true, // Enable box zooming
   keyboard: true, // Enable keyboard navigation
   touchZoom: true // Enable touch zooming
-}).setView([0, 0], 1); // Center the map and set zoom to show the whole world
+});
 
 // Add a dark tile layer
 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
   attribution: '' // No attribution text
 }).addTo(map);
 
-// Restrict panning to the bounds
-const bounds = L.latLngBounds(
-  L.latLng(-85, -180), // South-West corner
-  L.latLng(85, 180)    // North-East corner
-);
-map.setMaxBounds(bounds);
-
-// Ensure the map is centered and zoomed out to show all continents
-map.on('zoomend', function() {
-  if (map.getZoom() !== 1) {
-    map.setZoom(1); // Set zoom level to fully zoomed out
-  }
-});
-
-map.on('moveend', function() {
-  if (!map.getBounds().intersects(bounds)) {
-    map.setView([0, 0], 1); // Center the map if bounds are exceeded
-  }
-});
-
 // Define a square icon with adjusted size
 const squareIcon = L.icon({
   iconUrl: 'square.png', // Path to your square flag image
-  iconSize: [15, 15], // Adjusted size
-  iconAnchor: [7.5, 7.5], // Adjust anchor point
-  popupAnchor: [0, -15] // Popup position
+  iconSize: [17.25, 17.25], // Slightly increased size
+  iconAnchor: [8.625, 8.625], // Adjust anchor point
+  popupAnchor: [0, -17.25] // Popup position
 });
 
 // Function to get location data from OpenStreetMap API
@@ -73,13 +53,22 @@ const locations = [
   'Campina Grande, Brazil'
 ];
 
-Promise.all(locations.map(getLocationData)).then(results => {
-  results.forEach(location => {
-    if (location) {
-      const { lat, lon, city, country } = location;
-      L.marker([lat, lon], { icon: squareIcon })
-        .bindPopup(`<strong>${city}</strong><br>${country}`)
-        .addTo(map);
-    }
+// Array to hold the markers
+const markerPromises = locations.map(getLocationData);
+
+Promise.all(markerPromises).then(results => {
+  const markers = results.filter(location => location).map(location => {
+    const { lat, lon, city, country } = location;
+    return L.marker([lat, lon], { icon: squareIcon })
+      .bindPopup(`<strong>${city}</strong><br>${country}`)
+      .addTo(map);
   });
+
+  // Center the map based on the markers
+  if (markers.length > 0) {
+    const group = L.featureGroup(markers);
+    map.fitBounds(group.getBounds().pad(0.5)); // Center and pad the view to include all markers
+  } else {
+    map.setView([0, 0], 2); // Fallback view if no markers are found
+  }
 });
