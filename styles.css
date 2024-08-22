@@ -9,28 +9,22 @@ html, body {
 }
 
 #map {
-  height: 230px; /* Updated height in pixels */
-  width: 390px;  /* Updated width in pixels */
-  border: 1px solid #ffffff; /* Thin 1-pixel white border */
+  height: 250px; /* Updated height in pixels */
+  width: 490px;  /* Updated width in pixels */
+  border: 1px solid #d3d3d3; /* Light grey border */
 }
 
-/* Style zoom control buttons with rounded edges */
+/* Restore default button shapes and colors */
 .leaflet-control-zoom-in, .leaflet-control-zoom-out {
-  background-color: #333; /* Dark background */
-  color: #fff; /* White text */
-  border: 1px solid #fff; /* White border */
+  background-color: #fff; /* Default background */
+  color: #000; /* Default text color */
+  border: 1px solid #ccc; /* Light grey border */
   border-radius: 4px; /* Rounded edges */
   width: 32px; /* Button width */
   height: 32px; /* Button height */
   font-size: 16px; /* Font size for better readability */
   text-align: center; /* Center text */
   line-height: 32px; /* Vertically center text */
-}
-
-/* Invert colors when zooming */
-.leaflet-control-zoom-in:active, .leaflet-control-zoom-out:active {
-  background-color: #fff; /* Inverted background */
-  color: #333; /* Inverted text color */
 }
 
 /* Apply Arimo Bold font to popups */
@@ -44,13 +38,4 @@ html, body {
   border-radius: 8px; /* Rounded edges for the popup */
   background-color: #333; /* Dark background for popup */
   color: #fff; /* White text for better contrast */
-}
-
-/* Increase hover/click area for markers */
-.leaflet-marker-icon {
-  cursor: pointer; /* Pointer cursor for better interaction */
-}
-
-.leaflet-marker-icon:hover {
-  transform: scale(1.5); /* Enlarge marker on hover */
 }
